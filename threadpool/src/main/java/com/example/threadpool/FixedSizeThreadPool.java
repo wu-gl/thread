@@ -14,6 +14,12 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 public class FixedSizeThreadPool {
 
+    /**
+     * 创建线程池
+     *
+     * @param poolsize 核心线程数
+     * @param taskSize 最大可排队的任务数
+     */
     public FixedSizeThreadPool(int poolsize, int taskSize) {
         this.blockingQueue = new LinkedBlockingDeque<>(taskSize);
         workers = Collections.synchronizedList(new ArrayList<>());
@@ -33,12 +39,18 @@ public class FixedSizeThreadPool {
 
     public void shutDown() {
         isWorking = false;
-
+        //当然除了添加isWorking停止标志位，还可以强制关闭线程
+        //if (force) {
+        //    workers.forEach(d -> d.stop());
+        //}
     }
 
+    //是否工作，用于shutDown。
     public volatile boolean isWorking = true;
 
+    //待执行任务队列，所有的执行请求都进入队列
     private BlockingQueue<Runnable> blockingQueue;
+    //根据poolsize创建核心线程，不会释放
     private List<Thread> workers;
 
     public static class Worker extends Thread {
