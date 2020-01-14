@@ -13,30 +13,30 @@ public class ThreadpoolApplication {
 
     public static void main(String[] args) {
 
-        final FixedSizeThreadPool fixedSizeThreadPool = new FixedSizeThreadPool(3, 5);
-
-        for (int i = 0; i < 20; i++) {
-            try {
-                fixedSizeThreadPool.submit(() -> {
-                    try {
-                        System.out.println(System.currentTimeMillis());
-                        Thread.sleep(1000);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                });
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-        fixedSizeThreadPool.shutDown();
+//        final FixedSizeThreadPool fixedSizeThreadPool = new FixedSizeThreadPool(3, 5);
+//
+//        for (int i = 0; i < 20; i++) {
+//            try {
+//                fixedSizeThreadPool.submit(() -> {
+//                    try {
+//                        System.out.println(System.currentTimeMillis());
+//                        Thread.sleep(1000);
+//                    } catch (Exception ex) {
+//                        ex.printStackTrace();
+//                    }
+//                });
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//        }
+//        fixedSizeThreadPool.shutDown();
         // 用于计数线程是否执行完成
         try {
             //threadPool.scheduleAtFixedRate(,10,1,)
             //ExecutorService threadPool = new ThreadPoolExecutor(1, 5, 0, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(3), Executors.privilegedThreadFactory(), new ThreadPoolExecutor.CallerRunsPolicy());
 
             CountDownLatch countDownLatch = new CountDownLatch(20);
-            ExecutorService threadPool = Executors.newWorkStealingPool();
+            ExecutorService threadPool = Executors.newFixedThreadPool(5);
 
             for (int i = 0; i < 20; i++) {
                 try {
